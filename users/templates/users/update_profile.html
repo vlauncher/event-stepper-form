@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Profile{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center mb-4">Update Profile</h2>
+            <form method="POST" novalidate>
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" name="address" class="form-control {% if form.address.errors %}is-invalid{% endif %}" id="address" value="{{ form.address.value|default_if_none:'' }}">
+                    {% if form.address.errors %}
+                    <div class="invalid-feedback">
+                        {{ form.address.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="phone_number" class="form-label">Phone Number</label>
+                    <input type="text" name="phone_number" class="form-control {% if form.phone_number.errors %}is-invalid{% endif %}" id="phone_number" value="{{ form.phone_number.value|default_if_none:'' }}">
+                    {% if form.phone_number.errors %}
+                    <div class="invalid-feedback">
+                        {{ form.phone_number.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

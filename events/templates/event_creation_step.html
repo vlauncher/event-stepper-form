@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ wizard.management_form }}
+
+        <!-- Display the form fields -->
+        {{ wizard.form.as_p }}
+
+        <div class="d-flex justify-content-between mt-4">
+            {% if wizard.steps.prev %}
+                <button type="submit" name="wizard_goto_step" value="{{ wizard.steps.prev }}" class="btn btn-secondary">Back</button>
+            {% endif %}
+            <button type="submit" class="btn btn-primary">
+                {% if wizard.steps.last %}Submit{% else %}Next{% endif %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

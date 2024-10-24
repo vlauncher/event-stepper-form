@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-4">Profile</h2>
+
+    {% if profile %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ profile.user.first_name }} {{ profile.user.last_name }}</h5>
+                <p class="card-text"><strong>Address:</strong> {{ profile.address }}</p>
+                <p class="card-text"><strong>Phone Number:</strong> {{ profile.phone_number }}</p>
+                <a href="{% url 'update_profile' %}" class="btn btn-primary">Edit Profile</a>
+            </div>
+        </div>
+    {% else %}
+        <p>No profile found. Please create one.</p>
+    {% endif %}
+</div>
+{% endblock %}
