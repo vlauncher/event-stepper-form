@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Event Summary</h2>
+<p>Please review the details of the event before confirming.</p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ wizard.management_form }}
+    
+    {% for section_title, data in form_data.items %}
+        <h4>{{ section_title }}</h4>
+        <ul>
+            {% for field, value in data.items %}
+                <li><strong>{{ field|title }}:</strong> {{ value }}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary">Confirm Event</button>
+    <a href="{% url 'event_create' %}?step={{ step_prev }}" class="btn btn-secondary">Go Back</a>
+</form>
+
+{% endblock %}

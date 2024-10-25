@@ -3,7 +3,7 @@
 <div class="container mt-5">
     <h2 class="mb-4">Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</h2>
 
-    <form method="post">
+    <form method="post" novalidate>
         {% csrf_token %}
         {{ wizard.management_form }}
 

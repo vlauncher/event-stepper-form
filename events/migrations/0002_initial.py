@@ -10,44 +10,72 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('events', '0001_initial'),
+        ("events", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='event',
-            name='organizer',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='organized_events', to=settings.AUTH_USER_MODEL),
+            model_name="event",
+            name="organizer",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="organized_events",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='eventfacilitator',
-            name='event',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='facilitators', to='events.event'),
+            model_name="eventfacilitator",
+            name="event",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="facilitators",
+                to="events.event",
+            ),
         ),
         migrations.AddField(
-            model_name='eventfacilitator',
-            name='facilitator',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='facilitated_events', to=settings.AUTH_USER_MODEL),
+            model_name="eventfacilitator",
+            name="facilitator",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="facilitated_events",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='eventinvitation',
-            name='event',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='invitations', to='events.event'),
+            model_name="eventinvitation",
+            name="event",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="invitations",
+                to="events.event",
+            ),
         ),
         migrations.AddField(
-            model_name='eventinvitation',
-            name='inviter',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sent_invitations', to=settings.AUTH_USER_MODEL),
+            model_name="eventinvitation",
+            name="inviter",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="sent_invitations",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='eventparticipant',
-            name='event',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='participants', to='events.event'),
+            model_name="eventparticipant",
+            name="event",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="participants",
+                to="events.event",
+            ),
         ),
         migrations.AddField(
-            model_name='eventparticipant',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='registered_events', to=settings.AUTH_USER_MODEL),
+            model_name="eventparticipant",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="registered_events",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

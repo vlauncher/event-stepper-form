@@ -119,5 +119,3 @@ class ChangePasswordForm(forms.Form):
             raise ValidationError("New passwords do not match.")
 
         return cleaned_data
-
-

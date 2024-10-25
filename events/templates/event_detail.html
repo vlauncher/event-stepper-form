@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ event.title }}</h2>
+    <p>{{ event.description }}</p>
+    <p><strong>Date:</strong> {{ event.date }}</p>
+    <p><strong>Mode:</strong> {{ event.get_mode_display }}</p>
+    <p><strong>Location:</strong> 
+        {% if event.mode == 'in_person' %}
+            {{ event.physical_address }}
+        {% elif event.mode == 'online' %}
+            {{ event.location_meeting_link }}
+        {% endif %}
+    </p>
+</div>
+{% endblock %}

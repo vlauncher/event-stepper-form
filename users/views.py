@@ -152,8 +152,3 @@ class ChangePasswordView(LoginRequiredMixin, FormView):
     def form_invalid(self, form):
         messages.error(self.request, "There was an error with your form submission.")
         return super().form_invalid(form)
-
-
-
-
-
