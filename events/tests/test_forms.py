@@ -14,7 +14,7 @@ class EventBasicInfoFormTest(TestCase):
             data={
                 "title": "Sample Event",
                 "description": "Sample description",
-                "event_type": "meeting",  # Update to match the model's choice format
+                "event_type": "meeting",
                 "mode": "online",
             }
         )
@@ -65,7 +65,7 @@ class EventLocationFormTest(TestCase):
         self.assertTrue(form.is_valid())
         self.assertNotIn(
             "physical_address", form.errors
-        )  # Should be ignored for online events
+        )
 
     def test_physical_address_required_for_in_person_mode(self):
         form = EventLocationForm(
@@ -87,7 +87,7 @@ class EventDetailsFormTest(TestCase):
     def test_valid_data(self):
         form = EventDetailsForm(
             data={
-                "duration": "2",
+                "duration": "2 hours",
                 "max_participants": 100,
                 "date": "2024-10-30T10:00",
                 "registration_deadline": "2024-10-29T10:00",
