@@ -42,24 +42,12 @@ class Event(models.Model):
     contact_details = models.CharField(max_length=255)
     ticket_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     registration_deadline = models.DateTimeField()
-    special_requirements = models.TextField(
-        blank=True, null=True
-    )  # Accessibility, technical setup
-    equipment_needed = models.TextField(
-        blank=True, null=True
-    )  # e.g., projector, mic, etc.
+    special_requirements = models.TextField(blank=True, null=True)
+    equipment_needed = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
-
-    @property
-    def is_past(self):
-        return self.date < timezone.now()
-
-    @property
-    def is_registration_open(self):
-        return self.registration_deadline > timezone.now()
 
 
 class EventParticipant(models.Model):
@@ -82,7 +70,7 @@ class EventInvitation(models.Model):
         (
             "facilitator",
             "Facilitator",
-        ),  # Facilitators could be speakers, trainers, etc.
+        ),
     ]
 
     event = models.ForeignKey(
@@ -113,10 +101,8 @@ class EventFacilitator(models.Model):
     facilitator = models.ForeignKey(
         User, related_name="facilitated_events", on_delete=models.CASCADE
     )
-    role = models.CharField(max_length=255)  # e.g., Speaker, Trainer, etc.
-    confirmed = models.BooleanField(
-        default=False
-    )  # Facilitators can confirm their participation
+    role = models.CharField(max_length=255)
+    confirmed = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.facilitator.email} - {self.event.title} ({self.role})"

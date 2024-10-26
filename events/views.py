@@ -5,21 +5,15 @@ from .forms import (
     EventDetailsForm,
     EventLocationForm,
     EventRequirementsForm,
+    EventConfirmationForm,
 )
-from django import forms
 from .models import Event
 from django.views.generic import ListView, DetailView
 from .models import Event
 from django.contrib import messages
 
 
-# Create a dummy form for the confirmation step
-class EventConfirmationForm(forms.Form):
-    pass  # No fields, just for rendering the confirmation step
-
-
 class EventCreationWizard(SessionWizardView):
-    # Add the confirmation form as the last step
     form_list = [
         EventBasicInfoForm,
         EventDetailsForm,
@@ -39,28 +33,21 @@ class EventCreationWizard(SessionWizardView):
 
     def get_template_names(self):
         """Set a special template for the confirmation step"""
-        if self.steps.current == "4":  # Step 4 is the confirmation step
+        if self.steps.current == "4":
             return ["event_creation_confirmation.html"]
         return [self.template_name]
 
     def get_form(self, step=None, data=None, files=None):
-        # Custom behavior for location form based on event type and mode
-        if step == "2":  # Assuming the location form is the 3rd step (index 2)
-            event_type = self.get_cleaned_data_for_step("0")[
-                "event_type"
-            ]  # Get event type from the first step
-            mode = self.get_cleaned_data_for_step("0")[
-                "mode"
-            ]  # Get mode from the first step
+        if step == "2":
+            event_type = self.get_cleaned_data_for_step("0")["event_type"]
+            mode = self.get_cleaned_data_for_step("0")["mode"]
             return EventLocationForm(data, files, event_type=event_type, mode=mode)
         return super().get_form(step, data, files)
 
     def get_context_data(self, form, **kwargs):
         context = super().get_context_data(form=form, **kwargs)
         current_step = int(self.steps.current)
-
-        # If the current step is the confirmation step, prepare the form data
-        if self.steps.current == "4":  # Confirmation step
+        if self.steps.current == "4":
             form_data = {
                 self.form_titles[step]: self.get_cleaned_data_for_step(step)
                 for step in self.get_form_list().keys()

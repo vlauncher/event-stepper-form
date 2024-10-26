@@ -1,5 +1,6 @@
 from django import forms
 from .models import Event
+from datetime import timedelta
 
 
 class EventBasicInfoForm(forms.ModelForm):
@@ -18,6 +19,13 @@ class EventBasicInfoForm(forms.ModelForm):
             "event_type": {"required": "Event type can't be empty."},
             "mode": {"required": "Mode can't be empty."},
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["title"].label = "Event Title"
+        self.fields["description"].label = "Event Description"
+        self.fields["event_type"].label = "Event Type"
+        self.fields["mode"].label = "Event Mode"
 
 
 class EventLocationForm(forms.ModelForm):
@@ -102,6 +110,40 @@ class EventDetailsForm(forms.ModelForm):
             "ticket_price": {"required": "Ticket price can't be empty."},
         }
 
+    def clean(self):
+        cleaned_data = super().clean()
+        date = cleaned_data.get("date")
+        registration_deadline = cleaned_data.get("registration_deadline")
+
+        if date and registration_deadline:
+            if registration_deadline >= date:
+                raise forms.ValidationError(
+                    "Registration deadline must be before the event date."
+                )
+        return cleaned_data
+
+    def clean_duration(self):
+        duration_str = self.cleaned_data["duration"]
+
+        # Parse '1 hour', '30 minutes', etc., to a timedelta object.
+        try:
+            time_units = duration_str.lower().split()
+            if "day" in time_units[1]:
+                duration = timedelta(days=int(time_units[0]))
+            elif "hour" in time_units[1]:
+                duration = timedelta(hours=int(time_units[0]))
+            elif "minute" in time_units[1]:
+                duration = timedelta(minutes=int(time_units[0]))
+            else:
+                raise ValueError("Invalid duration format.")
+
+            return duration
+
+        except (IndexError, ValueError):
+            raise forms.ValidationError(
+                "Invalid duration format. Use 'X day(s)', 'X hour(s)', or 'X minute(s)'."
+            )
+
 
 class EventRequirementsForm(forms.ModelForm):
     special_requirements = forms.CharField(
@@ -131,3 +173,7 @@ class EventRequirementsForm(forms.ModelForm):
             "accommodation_provided",
             "refreshments_provided",
         ]
+
+
+class EventConfirmationForm(forms.Form):
+    pass
